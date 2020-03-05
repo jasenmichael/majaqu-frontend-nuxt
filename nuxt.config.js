@@ -1,4 +1,7 @@
 require('dotenv').config()
+const {
+  API_BASE_URL
+} = process.env
 
 export default {
   mode: 'spa',
@@ -35,6 +38,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/dotenv',
     '@nuxtjs/auth'
+    // '@nuxtjs/proxy'
   ],
   bootstrapVue: {
     icons: true
@@ -43,18 +47,19 @@ export default {
     redirects: {
       logout: "/login"
     },
+     fullPathRedirect: true,
     strategies: {
       local: {
         endpoints: {
           login: {
-            url: '/api/auth/local',
+            url: API_BASE_URL + '/auth/local',
             method: 'post',
             propertyName: 'jwt'
           },
           logout: false,
           // user: false,
           user: {
-            url: '/api/users/me',
+            url: API_BASE_URL + '/users/me',
             method: 'get',
             propertyName: false
             // propertyName: 'user'
@@ -68,19 +73,19 @@ export default {
   router: {
     middleware: ['auth']
   },
-  proxy: {
-    '/api/': {
-      // target: process.env.NODE_ENV === 'development' ? process.env.API_BASE_URL : 'https://api.majaqu.com',
-      target: process.env.API_BASE_URL,
-      pathRewrite: {
-        '^/api/': ''
-      }
-    }
-  },
+  // proxy: {
+  //   '/api/': {
+  //     target: API_BASE_URL,
+  //     changeOrigin: true,
+  //     pathRewrite: {
+  //       '^/api/': ''
+  //     }
+  //   }
+  // },
   axios: {
-    proxy: true,
-    progress: true
-    // baseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:9000' : ''
+    // proxy: true,
+    progress: true,
+    baseUrl: API_BASE_URL
   },
   build: {
     extend(config, ctx) {}
