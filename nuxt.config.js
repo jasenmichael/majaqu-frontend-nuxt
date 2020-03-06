@@ -47,19 +47,19 @@ export default {
     redirects: {
       logout: "/login"
     },
-     fullPathRedirect: true,
+    fullPathRedirect: true,
     strategies: {
       local: {
         endpoints: {
           login: {
-            url: API_BASE_URL + '/auth/local',
+            url: `${API_BASE_URL}/auth/local`,
             method: 'post',
             propertyName: 'jwt'
           },
           logout: false,
           // user: false,
           user: {
-            url: API_BASE_URL + '/users/me',
+            url: `${API_BASE_URL}/users/me`,
             method: 'get',
             propertyName: false
             // propertyName: 'user'
